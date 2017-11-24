@@ -1,4 +1,4 @@
-﻿# golang实现hashmap数据结构
+# golang实现hashmap数据结构
 ## 简介
 哈希表是存放键值对的数据结构，在哈希表中进行删除、插入操作几乎能达到O(1)的时间效率。简单来说，哈希表是数组与链表的结合，为了更好理解哈希表，先看我测试hashmap时的一段输出，比较形象的描绘了哈希表的结构  
 >0:----->&{20 atongmu <nil>}  
@@ -211,7 +211,6 @@ func (hm *HashMap) insert(e *Entry) {
 		}
 	}
 	//此时p指向尾部结点
-	//将新结点的next赋为nil，填至尾部
 	p.next = e
 	hm.size++
 }
@@ -222,19 +221,13 @@ func (hm *HashMap) Put(k int, v string) {
 	hm.insert(e)
 	//达到负载因子且还能扩容时，扩容并迁移数据
 	if float32(hm.size)/float32(nowCapacity) >= loadFactor && nowCapacity < maxCapacity {
-		//		fmt.Println("扩容前：")
-		//		hm.Traverse()
 		if 2*nowCapacity > maxCapacity {
 			nowCapacity = maxCapacity
 		} else {
 			nowCapacity = 2 * nowCapacity
 		}
-		//		fmt.Println("扩容后的nowCapacity:", nowCapacity)
 
-		//新建扩容后的hashmap，将hm中的entry移至newHm
 		newHm := CreateHashMap()
-		//		fmt.Println("hm bucket:", len(hm.buckets))
-		//		fmt.Println("newHm bucket:", len(newHm.buckets))
 		var index int
 		for index = 0; index < len(hm.buckets); index++ {
 			p := hm.buckets[index].next
@@ -243,7 +236,6 @@ func (hm *HashMap) Put(k int, v string) {
 				pNext := p.next
 				p.next = nil
 				newHm.insert(p)
-				//				fmt.Println("移动到index:", index, "移动的是：", p)
 				p = pNext
 			}
 		}
@@ -255,7 +247,7 @@ func (hm *HashMap) Put(k int, v string) {
 		for b1 = len(hm.buckets); b1 < b2; b1++ {
 			hm.buckets = append(hm.buckets, Entry{})
 		}
-		//移动回数据
+		//移回数据
 		for b1 = 0; b1 < b2; b1++ {
 			hm.buckets[b1].next = newHm.buckets[b1].next
 			newHm.buckets[b1].next = nil
@@ -314,8 +306,6 @@ func (hm *HashMap) Traverse() {
 		}
 	}
 	fmt.Println()
-	//	fmt.Println("表的容量为：", len(hm.buckets))
-	//	fmt.Println("表中entry个数为：", hm.size)
 }
 ````
 

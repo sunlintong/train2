@@ -53,7 +53,7 @@ HashMap类型就是整个hashmap了，它描述其大小，用Entry类型的切�
 ### 2. 全局常量、变量
 ````golang
 const maxCapacity int = 100    
-const loadFactor float32 = 0.7  5     
+const loadFactor float32 = 0.75     
 var nowCapacity int = 10   
 ````  
 `maxCapacity`定义了hashmap中bucket的最大扩充容量，即，虽然hashmap可以自动扩充大小一提高使用效率，但不能无休止地扩充。  
